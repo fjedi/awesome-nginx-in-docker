@@ -1,0 +1,19 @@
+# Note: For production. For development, use `docker-compose.yml`
+version: '3.0'
+services:
+  nginx:
+    image: fjedi-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DOMAINS
+    container_name: "nginx"
+    network_mode: bridge
+    expose:
+      - 80
+      - 443
+    ports:
+      - 8080:80
+      - 8443:443
+    restart: unless-stopped
