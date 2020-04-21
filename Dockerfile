@@ -132,9 +132,10 @@ RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
 # Copy nginx configuration files
 # COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
-RUN mkdir /usr/local/openresty/nginx/conf/conf.d/ \
-    && chown -cR nginx.nginx /usr/local/openresty/nginx/conf/conf.d/ \
-    && chmod 770 -cR /usr/local/openresty/nginx/conf/conf.d/
+RUN mkdir -p /etc/nginx/conf.d/ \
+    && chown -cR nginx.nginx /etc/nginx/conf.d/ \
+    && chmod 770 -cR /etc/nginx/conf.d/ \
+    && ln -s /etc/nginx/conf.d /usr/local/openresty/nginx/conf/
 
 #
 EXPOSE 80 443
