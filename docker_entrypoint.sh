@@ -4,8 +4,7 @@ set -euo pipefail
 NGINX_DIR=/usr/local/openresty/nginx
 NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 
-# If config doesn't exist, initialize with sane defaults for running a
-# non-mining node.
+# If config doesn't exist, initialize with sane defaults
 
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
@@ -109,7 +108,7 @@ http {
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://\$host\$request_uri;
     }
   }
 
