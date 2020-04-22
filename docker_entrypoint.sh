@@ -76,25 +76,26 @@ http {
   }
 
   # HTTPS server
-  server {
-    listen 443 ssl;
-
-    # Dynamic handler for issuing or returning certs for SNI domains.
-    ssl_certificate_by_lua_block {
-      auto_ssl:ssl_certificate()
-    }
-
-    # You must still define a static ssl_certificate file for nginx to start.
-    #
-    # You may generate a self-signed fallback with:
-    #
-    # openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
-    #   -subj '/CN=sni-support-required-for-valid-ssl' \
-    #   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
-    #   -out /etc/ssl/resty-auto-ssl-fallback.crt
-    ssl_certificate /etc/ssl/resty-auto-ssl-fallback.crt;
-    ssl_certificate_key /etc/ssl/resty-auto-ssl-fallback.key;
-  }
+  # !YOU NEED TO SET YOU CUSTOM HTTPS-SERVER CONFIGURATION!
+  #  server {
+  #    listen 443 ssl;
+  #
+  #    # Dynamic handler for issuing or returning certs for SNI domains.
+  #    ssl_certificate_by_lua_block {
+  #      auto_ssl:ssl_certificate()
+  #    }
+  #
+  #    # You must still define a static ssl_certificate file for nginx to start.
+  #    #
+  #    # You may generate a self-signed fallback with:
+  #    #
+  #    # openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
+  #    #   -subj '/CN=sni-support-required-for-valid-ssl' \
+  #    #   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
+  #    #   -out /etc/ssl/resty-auto-ssl-fallback.crt
+  #    ssl_certificate /etc/ssl/resty-auto-ssl-fallback.crt;
+  #    ssl_certificate_key /etc/ssl/resty-auto-ssl-fallback.key;
+  #  }
 
   # HTTP server
   server {
