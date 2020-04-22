@@ -132,6 +132,8 @@ http {
       default upgrade;
       ''      close;
   }
+
+  include /etc/nginx/conf.d/*.conf;
 }
 EOF
 fi
