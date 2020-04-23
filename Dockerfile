@@ -152,8 +152,20 @@ RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
 
 # Remove default nginx.conf
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
+
 # Copy config that includes recommended ssl/security rules
 COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.conf
+
+# Copy config with core-settings for pagespeed module
+COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
+
+# Create folders required by pagespeed module
+RUN mkdir /var/cache/nginx/pagespeed \
+    && chown nginx:root /var/cache/nginx/pagespeed \
+    && chmod 700 /var/cache/nginx/pagespeed \
+    && mkdir /var/log/pagespeed \
+    && chown nginx. /var/log/pagespeed
+
 # Map default nginx-conf directory to openresty
 RUN mkdir -p /etc/nginx/conf.d/ \
     && chown -cR nginx.nginx /etc/nginx/conf.d/ \

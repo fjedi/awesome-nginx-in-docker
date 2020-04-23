@@ -9,7 +9,7 @@ NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
 events {
-  worker_connections 1024;
+  worker_connections ${NGX_MAX_WORKER_CONNECTIONS:-1024};
 }
 
 http {
@@ -28,7 +28,7 @@ http {
   # default DNS servers, which can be found in /etc/resolv.conf. If your network
   # is not IPv6 compatible, you may wish to disable IPv6 results by using the
   # "ipv6=off" flag (like "resolver 8.8.8.8 ipv6=off").
-  resolver 8.8.8.8;
+  resolver ${NGX_DNS_SERVER:-8.8.8.8};
 
   #
   server_tokens off;
@@ -36,13 +36,18 @@ http {
   more_clear_headers 'Server';
 
   #
-  client_max_body_size 50M;
+  client_max_body_size ${NGX_MAX_BODY_SIZE:-50M};
+
+  # PageSpeed module
+  pagespeed ${NGX_PAGESPEED_MODULE_STATUS:-on};
+  include nginx.pagespeed.core.conf;
 
   # set REMOTE_ADDR from any internal proxies
   # see http://nginx.org/en/docs/http/ngx_http_realip_module.html
   set_real_ip_from 127.0.0.1;
   set_real_ip_from 10.0.0.0/8;
-  set_real_ip_from 172.0.0.0/16;
+  set_real_ip_from 192.168.0.0/16;
+  set_real_ip_from 172.16.0.0/12;
   real_ip_header X-Forwarded-For;
   real_ip_recursive on;
 
@@ -51,7 +56,7 @@ http {
   ##
   gzip on;
   gzip_http_version 1.0;
-  gzip_comp_level 2;
+  gzip_comp_level ${NGX_GZIP_COMPRESSION_LEVEL:-6};
   gzip_proxied any;
   gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
   #
@@ -59,7 +64,7 @@ http {
   brotli_static on;
   brotli_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
   # Sets on-the-fly compression Brotli quality (compression) level. Acceptable values are in the range from 0 to 11.
-  brotli_comp_level 6;
+  brotli_comp_level ${NGX_BROTLI_COMPRESSION_LEVEL:-6};
 
   # Initial setup tasks.
   init_by_lua_block {
