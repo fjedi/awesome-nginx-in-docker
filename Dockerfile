@@ -160,7 +160,7 @@ COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.co
 COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
 
 # Create folders required by pagespeed module
-RUN mkdir /var/cache/nginx/pagespeed \
+RUN mkdir -p /var/cache/nginx/pagespeed \
     && chown nginx:root /var/cache/nginx/pagespeed \
     && chmod 700 /var/cache/nginx/pagespeed \
     && mkdir /var/log/pagespeed \
