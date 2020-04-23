@@ -2,6 +2,7 @@ FROM ubuntu:bionic
 MAINTAINER Alexander Radyushin <alexander@fjedi.com>
 
 ENV NGX_BROTLI_COMMIT="bcceaab88e555f686d5ed39dfb238f898df2788c" \
+    NGX_PAGESPEED_VERSION="1.13.35.2" \
     RUNTIME_DEPS="curl bash sed gcc make openssl iputils-ping net-tools" \
     PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin
 
@@ -41,6 +42,7 @@ ARG OPENRESTY_CONFIG_OPTIONS="\
     --with-stream_ssl_module \
     --with-threads \
     --add-module=/usr/src/ngx_brotli \
+    --add-module=/usr/src/incubator-pagespeed-ngx-${NGX_PAGESPEED_VERSION}-stable \
     "
 ARG OPENRESTY_CONFIG_OPTIONS_MORE=""
 
@@ -73,6 +75,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         autoconf \
         libtool \
         automake \
+        # Required to build ngx_pagespeed module
+        uuid-dev \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz -o openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz \
@@ -86,10 +90,27 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && ./autogen.sh \
     && ./configure \
     && make install \
+
+    # Download Brotli
     && cd /usr/src \
+    && echo "Downloading Brotli compression plugin..." \
     && git clone --recursive https://github.com/google/ngx_brotli.git \
     && cd ngx_brotli \
     && git checkout -b $NGX_BROTLI_COMMIT $NGX_BROTLI_COMMIT \
+
+    # Download PageSpeed
+    && cd /usr/src \
+    && echo "Downloading PageSpeed..." \
+    && curl -L https://github.com/pagespeed/ngx_pagespeed/archive/v${NGX_PAGESPEED_VERSION}-stable.tar.gz | tar -zx \
+    # psol needs to be inside ngx_pagespeed module
+    # Download PageSpeed Optimization Library and extract it to nginx source dir
+    && cd /usr/src/incubator-pagespeed-ngx-${NGX_PAGESPEED_VERSION}-stable/ \
+    && echo "Downloading PSOL..." \
+    && curl -L https://dl.google.com/dl/page-speed/psol/${NGX_PAGESPEED_VERSION}-x64.tar.gz | tar -zx \
+    && ls -la /usr/src/incubator-pagespeed-ngx-${NGX_PAGESPEED_VERSION}-stable/ \
+    && mkdir -p /tmp/nginx/pagespeed/images/ \
+
+    # Building openresty from sources
     && cd /tmp/openresty-${OPENRESTY_VERSION} \
     && ./configure -j${OPENRESTY_J} ${_OPENRESTY_CONFIG_DEPS} ${OPENRESTY_CONFIG_OPTIONS} ${OPENRESTY_CONFIG_OPTIONS_MORE} \
     && make -j${OPENRESTY_J} \
