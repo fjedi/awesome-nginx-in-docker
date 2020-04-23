@@ -171,7 +171,7 @@ COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.co
 # Copy config with core-settings for pagespeed module
 COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
 #
-ADD templates /usr/local/openresty/nginx/conf/
+ADD templates /usr/local/openresty/nginx/conf/templates
 
 #
 EXPOSE 80 443
