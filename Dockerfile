@@ -149,16 +149,6 @@ RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
            -subj '/CN=sni-support-required-for-valid-ssl' \
            -keyout /etc/ssl/resty-auto-ssl-fallback.key \
            -out /etc/ssl/resty-auto-ssl-fallback.crt
-
-# Remove default nginx.conf
-RUN rm /usr/local/openresty/nginx/conf/nginx.conf
-
-# Copy config that includes recommended ssl/security rules
-COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.conf
-
-# Copy config with core-settings for pagespeed module
-COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
-
 # Create folders required by pagespeed module
 RUN mkdir -p /var/cache/nginx/pagespeed \
     && chown nginx:root /var/cache/nginx/pagespeed \
@@ -171,6 +161,17 @@ RUN mkdir -p /etc/nginx/conf.d/ \
     && chown -cR nginx.nginx /etc/nginx/conf.d/ \
     && chmod 770 -cR /etc/nginx/conf.d/ \
     && ln -s /etc/nginx/conf.d /usr/local/openresty/nginx/conf/
+
+# Remove default nginx.conf
+RUN rm /usr/local/openresty/nginx/conf/nginx.conf
+
+# Copy config that includes recommended ssl/security rules
+COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.conf
+
+# Copy config with core-settings for pagespeed module
+COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
+#
+ADD templates /usr/local/openresty/nginx/conf/
 
 #
 EXPOSE 80 443

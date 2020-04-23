@@ -8,11 +8,26 @@ NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
+worker_processes auto;
+worker_rlimit_nofile 65535;
+
 events {
+  multi_accept on;
   worker_connections ${NGX_MAX_WORKER_CONNECTIONS:-1024};
 }
 
 http {
+  charset utf-8;
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  log_not_found off;
+  types_hash_max_size 2048;
+  #
+  server_tokens off;
+  # Clear the Server output header
+  more_clear_headers 'Server';
+
   # The "auto_ssl" shared dict should be defined with enough storage space to
   # hold your certificate data. 1MB of storage holds certificates for
   # approximately 100 separate domains.
@@ -29,11 +44,7 @@ http {
   # is not IPv6 compatible, you may wish to disable IPv6 results by using the
   # "ipv6=off" flag (like "resolver 8.8.8.8 ipv6=off").
   resolver ${NGX_DNS_SERVER:-8.8.8.8};
-
-  #
-  server_tokens off;
-  # Clear the Server output header
-  more_clear_headers 'Server';
+  resolver_timeout 3s;
 
   #
   client_max_body_size ${NGX_MAX_BODY_SIZE:-50M};
