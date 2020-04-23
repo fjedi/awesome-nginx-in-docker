@@ -32,6 +32,10 @@ http {
 
   #
   server_tokens off;
+  # Clear the Server output header
+  more_clear_headers 'Server';
+
+  #
   client_max_body_size 50M;
 
   # set REMOTE_ADDR from any internal proxies
