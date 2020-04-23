@@ -129,9 +129,11 @@ RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
            -keyout /etc/ssl/resty-auto-ssl-fallback.key \
            -out /etc/ssl/resty-auto-ssl-fallback.crt
 
-# Copy nginx configuration files
-# COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+# Remove default nginx.conf
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
+# Copy config that includes recommended ssl/security rules
+COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.conf
+# Map default nginx-conf directory to openresty
 RUN mkdir -p /etc/nginx/conf.d/ \
     && chown -cR nginx.nginx /etc/nginx/conf.d/ \
     && chmod 770 -cR /etc/nginx/conf.d/ \
