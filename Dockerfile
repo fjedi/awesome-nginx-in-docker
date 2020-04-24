@@ -59,7 +59,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
-        curl \
         gettext-base \
         libgd-dev \
         libgeoip-dev \
@@ -77,7 +76,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         automake \
         # Required to build ngx_pagespeed module
         uuid-dev \
-        # Required for supervisor nginx-reload process
+    # Packages required for graceful nginx-reload on configuration changes
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         inotify-tools \
         supervisor \
     && cd /tmp \
@@ -178,6 +178,8 @@ ADD templates /usr/local/openresty/nginx/conf/templates
 
 #
 EXPOSE 80 443
+#
+VOLUME ["/etc/nginx/conf.d", "/etc/resty-auto-ssl"]
 
 COPY nginx.supervisor.conf /etc/supervisor/conf.d/nginx.conf
 
