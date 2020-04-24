@@ -3,7 +3,7 @@ MAINTAINER Alexander Radyushin <alexander@fjedi.com>
 
 ENV NGX_BROTLI_COMMIT="bcceaab88e555f686d5ed39dfb238f898df2788c" \
     NGX_PAGESPEED_VERSION="1.13.35.2" \
-    RUNTIME_DEPS="curl bash sed gcc make openssl iputils-ping net-tools" \
+    RUNTIME_DEPS="curl bash mc nano sed gcc make openssl iputils-ping net-tools" \
     PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin
 
 # Docker Build Arguments
@@ -77,6 +77,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         automake \
         # Required to build ngx_pagespeed module
         uuid-dev \
+        # Required for supervisor nginx-reload process
+        inotify-tools \
+        supervisor \
     && cd /tmp \
     && curl -fSL https://www.openssl.org/source/openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz -o openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${OPENRESTY_OPENSSL_VERSION}.tar.gz \
@@ -175,6 +178,8 @@ ADD templates /usr/local/openresty/nginx/conf/templates
 
 #
 EXPOSE 80 443
+
+COPY nginx.supervisor.conf /etc/supervisor/conf.d/nginx.conf
 
 #
 ADD ./docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh

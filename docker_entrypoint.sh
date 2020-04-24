@@ -147,7 +147,7 @@ EOF
 fi
 
 if [ $# -eq 0 ]; then
-  exec /usr/local/openresty/bin/openresty -c $NGINX_CONF -g "daemon off;";
+  exec /usr/bin/supervisord;
 else
   exec "$@"
 fi
