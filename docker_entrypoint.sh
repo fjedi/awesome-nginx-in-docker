@@ -8,6 +8,7 @@ NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
+user nginx;
 worker_processes auto;
 worker_rlimit_nofile 65535;
 
