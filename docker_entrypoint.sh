@@ -29,10 +29,14 @@ http {
   # Clear the Server output header
   more_clear_headers 'Server';
 
+  #
+  include mime.types;
+	default_type application/octet-stream;
+
   # The "auto_ssl" shared dict should be defined with enough storage space to
   # hold your certificate data. 1MB of storage holds certificates for
   # approximately 100 separate domains.
-  lua_shared_dict auto_ssl 1m;
+  lua_shared_dict auto_ssl 10m;
   # The "auto_ssl_settings" shared dict is used to temporarily store various settings
   # like the secret used by the hook server on port 8999. Do not change or
   # omit it.
@@ -51,7 +55,7 @@ http {
   client_max_body_size ${NGX_MAX_BODY_SIZE:-50M};
 
   # PageSpeed module
-  pagespeed ${NGX_PAGESPEED_MODULE_STATUS:-on};
+  pagespeed ${NGX_PAGESPEED_MODULE_STATUS:-off};
   include nginx.pagespeed.core.conf;
 
   # set REMOTE_ADDR from any internal proxies
