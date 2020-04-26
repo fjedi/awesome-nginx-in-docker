@@ -175,6 +175,8 @@ COPY nginx.ssl.default.conf /usr/local/openresty/nginx/conf/nginx.ssl.default.co
 COPY nginx.pagespeed.core.conf /usr/local/openresty/nginx/conf/nginx.pagespeed.core.conf
 #
 ADD templates /usr/local/openresty/nginx/conf/templates
+# Create folder to store nginx logs
+RUN mkdir -p /var/log/nginx
 
 #
 EXPOSE 80 443
