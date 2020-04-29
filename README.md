@@ -10,6 +10,7 @@
 * Reasonable and battle-tested `security and optimization settings` that could optionally be included into your custom virtual-host config
 * Better than simple gzip `data compression` with google's [brotli](https://github.com/google/ngx_brotli) module
 * `SEO and speed optimization` for your website with google's [pagespeed](https://www.modpagespeed.com/doc/build_ngx_pagespeed_from_source) module
+* Graceful `auto-reload` of the nginx process in case of configuration changes
 * A set of `configuration snippets` that will help to set up *proxy* or default *location* paths
 
 ### Usage
