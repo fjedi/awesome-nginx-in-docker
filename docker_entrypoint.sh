@@ -9,12 +9,20 @@ NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
 user nginx;
+# This number should be, at maximum, the number of CPU cores on your system.
 worker_processes auto;
+# Number of file descriptors used for Nginx.
 worker_rlimit_nofile 65535;
 
 events {
+  # Accept as many connections as possible, after nginx gets notification about a new connection.
   multi_accept on;
+
+  # Determines how many clients will be served by each worker process.
   worker_connections ${NGX_MAX_WORKER_CONNECTIONS:-1024};
+
+  # The effective method, used on Linux 2.6+, optmized to serve many clients with each thread.
+  use epoll;
 }
 
 http {
