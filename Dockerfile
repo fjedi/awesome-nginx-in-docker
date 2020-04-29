@@ -93,6 +93,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && ./autogen.sh \
     && ./configure \
     && make install \
+    # Remove "RANDFILE" setting from openssl config to avoid "Can't load ./.rnd into RNG" error
+    && cat /etc/ssl/openssl.cnf | sed "s/RANDFILE\s*=\s*\$ENV::HOME\/\.rnd/#/" > /etc/ssl/openssl.cnf \
 
     # Download Brotli
     && cd /usr/src \
