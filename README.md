@@ -61,7 +61,7 @@ start using
 docker-compose up -d
 ```
 
-###Available configuration options: 
+### Available configuration options: 
 
  | Variable | Example | Description
  | --- | --- | ---|
