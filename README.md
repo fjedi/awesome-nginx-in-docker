@@ -2,7 +2,6 @@
 *The simpliest solution to run fine-tuned web-server with auto-ssl, data-compression and security settings*
 
 ![build](https://img.shields.io/docker/cloud/build/fjedi/nginx.svg)
-![build](https://img.shields.io/docker/v/fjedi/nginx/latest)
 ![build](https://img.shields.io/docker/pulls/fjedi/nginx.svg)
 
 ### Features
