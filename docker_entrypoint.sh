@@ -100,6 +100,8 @@ http {
     auto_ssl:set("allow_domain", function(domain)
       return ngx.re.match(domain, "^(${DOMAINS})$", "ijo")
     end)
+    
+    auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
 
     auto_ssl:init()
   }
