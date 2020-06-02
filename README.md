@@ -10,6 +10,7 @@
 * Reasonable and battle-tested `security and optimization settings` that could optionally be included into your custom virtual-host config
 * Better than simple gzip `data compression` with google's [brotli](https://github.com/google/ngx_brotli) module
 * `SEO and speed optimization` for your website with google's [pagespeed](https://www.modpagespeed.com/doc/build_ngx_pagespeed_from_source) module
+* `GeoIP` module with maxmind's ip-database and optional white/blacklisting by country
 * Graceful `auto-reload` of the nginx process in case of configuration changes
 * A set of `configuration snippets` that will help to set up *proxy* or default *location* paths
 
@@ -64,15 +65,15 @@ docker-compose up -d
 
 ### Available configuration options
 
- | Variable | Example | Description
- | --- | --- | ---|
- | DOMAINS | `example.com`, `([a-z]+.)?example.com` | Regex pattern of allowed domains. Internally, we're using [ngx.re.match](https://github.com/openresty/lua-nginx-module#ngxrematch) |
- | NGX_DNS_SERVER | `8.8.8.8` | DNS resolver used for OCSP stapling. `8.8.8.8` by default. |
- | NGX_MAX_BODY_SIZE | `50M` | Max allowed body size. `50M` by default. |
- | NGX_PAGESPEED_MODULE_STATUS | `on`, `off` | Enable/Disable pagespeed module. `off` by default. |
- | NGX_GZIP_COMPRESSION_LEVEL | `6` | gzip compression level. `6` by default. |
- | NGX_BROTLI_COMPRESSION_LEVEL | `6` | gzip compression level. `6` by default. |
- | NGX_MAX_WORKER_CONNECTIONS | `1024` | Determines how many clients will be served by each worker process. `1024` by default. |
+ | Variable                     | Example                                | Description                                                                                                                        |
+ | ---------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+ | DOMAINS                      | `example.com`, `([a-z]+.)?example.com` | Regex pattern of allowed domains. Internally, we're using [ngx.re.match](https://github.com/openresty/lua-nginx-module#ngxrematch) |
+ | NGX_DNS_SERVER               | `8.8.8.8`                              | DNS resolver used for OCSP stapling. `8.8.8.8` by default.                                                                         |
+ | NGX_MAX_BODY_SIZE            | `50M`                                  | Max allowed body size. `50M` by default.                                                                                           |
+ | NGX_PAGESPEED_MODULE_STATUS  | `on`, `off`                            | Enable/Disable pagespeed module. `off` by default.                                                                                 |
+ | NGX_GZIP_COMPRESSION_LEVEL   | `6`                                    | gzip compression level. `6` by default.                                                                                            |
+ | NGX_BROTLI_COMPRESSION_LEVEL | `6`                                    | gzip compression level. `6` by default.                                                                                            |
+ | NGX_MAX_WORKER_CONNECTIONS   | `1024`                                 | Determines how many clients will be served by each worker process. `1024` by default.                                              |
  
 
 ## LICENCE
