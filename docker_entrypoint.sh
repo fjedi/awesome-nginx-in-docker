@@ -75,6 +75,10 @@ http {
   real_ip_header X-Forwarded-For;
   real_ip_recursive on;
 
+  # GeoIP databases
+  geoip_country /usr/local/openresty/nginx/data/geoip/countries.dat;
+  geoip_city /usr/local/openresty/nginx/data/geoip/cities.dat;
+
   ##
   # Gzip Settings
   ##
@@ -100,7 +104,7 @@ http {
     auto_ssl:set("allow_domain", function(domain)
       return ngx.re.match(domain, "^(${DOMAINS})$", "ijo")
     end)
-    
+
     auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
 
     auto_ssl:init()
