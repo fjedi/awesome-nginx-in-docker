@@ -163,6 +163,8 @@ RUN mkdir -p /var/cache/nginx/pagespeed \
 
 # Get GeoIP database
 RUN mkdir -p /usr/local/openresty/nginx/data/geoip
+# We use pre-downloaded files, if you need latest versions of *.dat files
+# you may download them from https://www.miyuru.lk/geoiplegacy
 COPY data/geoip/*.dat /usr/local/openresty/nginx/data/geoip
 
 # Map default nginx-conf directory to openresty
