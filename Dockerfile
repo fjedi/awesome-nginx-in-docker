@@ -150,10 +150,11 @@ RUN groupadd nginx \
 #
 RUN luarocks install lua-resty-auto-ssl
 RUN mkdir /etc/resty-auto-ssl && chown -cR nginx.nginx /etc/resty-auto-ssl && chmod 777 -cR /etc/resty-auto-ssl
+COPY openssl.cnf /tmp/openssl.cnf
 RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
-  -subj '/CN=sni-support-required-for-valid-ssl' \
   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
-  -out /etc/ssl/resty-auto-ssl-fallback.crt
+  -out /etc/ssl/resty-auto-ssl-fallback.crt \
+  -config /tmp/openssl.cnf
 # Create folders required by pagespeed module
 RUN mkdir -p /var/cache/nginx/pagespeed \
   && chown nginx:root /var/cache/nginx/pagespeed \
@@ -165,7 +166,7 @@ RUN mkdir -p /var/cache/nginx/pagespeed \
 RUN mkdir -p /usr/local/openresty/nginx/data/geoip
 # We use pre-downloaded files, if you need latest versions of *.dat files
 # you may download them from https://www.miyuru.lk/geoiplegacy
-COPY data/geoip/*.dat /usr/local/openresty/nginx/data/geoip
+COPY data/geoip/*.dat /usr/local/openresty/nginx/data/geoip/
 
 # Map default nginx-conf directory to openresty
 RUN mkdir -p /etc/nginx/conf.d/ \
