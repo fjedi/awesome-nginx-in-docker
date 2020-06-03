@@ -65,6 +65,9 @@ http {
   # PageSpeed module
   pagespeed ${NGX_PAGESPEED_MODULE_STATUS:-off};
   include nginx.pagespeed.core.conf;
+  # Set the value of the `X-Page-Speed` response header
+  # https://modpagespeed.com/doc/configuration#XHeaderValue
+  pagespeed XHeaderValue "pagespeed";
 
   # set REMOTE_ADDR from any internal proxies
   # see http://nginx.org/en/docs/http/ngx_http_realip_module.html
