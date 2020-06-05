@@ -75,8 +75,12 @@ http {
   set_real_ip_from 10.0.0.0/8;
   set_real_ip_from 192.168.0.0/16;
   set_real_ip_from 172.16.0.0/12;
-  real_ip_header X-Forwarded-For;
   real_ip_recursive on;
+  #
+  real_ip_header X-Forwarded-For;
+  # Uncomment this line if you want to get client's real ip
+  # and your server is behind CloudFlare reverse-proxy
+  # include templates/geoip_cloudflare.conf;
 
   # GeoIP databases
   geoip_country /usr/local/openresty/nginx/data/geoip/countries.dat;
