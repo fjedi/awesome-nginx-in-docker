@@ -8,6 +8,9 @@ NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 
 if [ ! -e "${NGINX_CONF}" ]; then
 tee -a >${NGINX_CONF} <<EOF
+# Load nginx/openresty lua modules
+load_module "modules/ngx_http_geoip_module.so";
+
 user nginx;
 # This number should be, at maximum, the number of CPU cores on your system.
 worker_processes auto;
