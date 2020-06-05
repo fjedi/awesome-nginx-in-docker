@@ -115,7 +115,7 @@ http {
       return ngx.re.match(domain, "^(${DOMAINS})$", "ijo")
     end)
 
-    # Comment this line if you start this server in production environment
+    -- Comment this line if you start this server in production environment
     auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
 
     auto_ssl:init()
