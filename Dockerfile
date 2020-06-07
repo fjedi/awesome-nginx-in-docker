@@ -150,7 +150,7 @@ RUN groupadd nginx \
 #
 RUN luarocks install lua-resty-auto-ssl
 RUN mkdir /etc/resty-auto-ssl && chown -cR nginx.nginx /etc/resty-auto-ssl && chmod 777 -cR /etc/resty-auto-ssl
-COPY openssl.cnf /tmp/openssl.cnf
+COPY openssl.cnf /etc/ssl/openssl.cnf
 RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
   -out /etc/ssl/resty-auto-ssl-fallback.crt \
