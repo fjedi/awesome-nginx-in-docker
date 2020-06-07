@@ -153,8 +153,7 @@ RUN mkdir /etc/resty-auto-ssl && chown -cR nginx.nginx /etc/resty-auto-ssl && ch
 COPY openssl.cnf /etc/ssl/openssl.cnf
 RUN openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 \
   -keyout /etc/ssl/resty-auto-ssl-fallback.key \
-  -out /etc/ssl/resty-auto-ssl-fallback.crt \
-  -config /tmp/openssl.cnf
+  -out /etc/ssl/resty-auto-ssl-fallback.crt
 # Create folders required by pagespeed module
 RUN mkdir -p /var/cache/nginx/pagespeed \
   && chown nginx:root /var/cache/nginx/pagespeed \
