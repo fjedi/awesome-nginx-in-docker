@@ -194,7 +194,7 @@ RUN mkdir -p /var/log/nginx
 #
 EXPOSE 80 443
 #
-VOLUME ["/etc/nginx/conf.d", "/etc/resty-auto-ssl"]
+VOLUME ["/etc/nginx/error_pages", "/etc/nginx/conf.d", "/etc/resty-auto-ssl"]
 
 COPY nginx.supervisor.conf /etc/supervisor/conf.d/nginx.conf
 
