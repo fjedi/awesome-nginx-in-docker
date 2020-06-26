@@ -173,6 +173,11 @@ RUN mkdir -p /etc/nginx/conf.d/ \
   && chmod 770 -cR /etc/nginx/conf.d/ \
   && ln -s /etc/nginx/conf.d /usr/local/openresty/nginx/conf/
 
+# Adding custom 403, 404 and 50x error-pages
+ADD error_pages /etc/nginx/error_pages
+RUN chown -cR nginx.nginx /etc/nginx/error_pages/ \
+  && ln -s /etc/nginx/error_pages /usr/local/openresty/nginx/conf/
+
 # Remove default nginx.conf
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
 

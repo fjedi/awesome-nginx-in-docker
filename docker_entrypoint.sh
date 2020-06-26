@@ -138,6 +138,9 @@ http {
   server {
     listen 80;
 
+    #
+    include templates/error_pages.conf;
+
     # Endpoint used for performing domain verification with Let's Encrypt.
     location /.well-known/acme-challenge/ {
       content_by_lua_block {
