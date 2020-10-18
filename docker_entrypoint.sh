@@ -126,7 +126,7 @@ http {
   }
 
   #  HTTPS server
-  #  !YOU NEED TO SET YOU CUSTOM HTTPS-SERVER CONFIGURATION!
+  #  !YOU NEED TO SET YOUR CUSTOM HTTPS-SERVER CONFIGURATION!
   #  server {
   #    listen 443 ssl;
   #
