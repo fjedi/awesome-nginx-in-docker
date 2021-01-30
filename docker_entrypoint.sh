@@ -83,7 +83,7 @@ http {
   real_ip_header X-Forwarded-For;
   # Uncomment this line if you want to get client's real ip
   # and your server is behind CloudFlare reverse-proxy
-  # include templates/geoip_cloudflare.conf;
+  # include presets/geoip_cloudflare.conf;
 
   # GeoIP databases
   geoip_country /usr/local/openresty/nginx/data/geoip/countries.dat;
@@ -139,7 +139,7 @@ http {
     listen 80;
 
     #
-    include templates/error_pages.conf;
+    include presets/error_pages.conf;
 
     # Endpoint used for performing domain verification with Let's Encrypt.
     location /.well-known/acme-challenge/ {
