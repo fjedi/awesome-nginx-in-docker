@@ -72,6 +72,9 @@ http {
   # https://modpagespeed.com/doc/configuration#XHeaderValue
   pagespeed XHeaderValue "pagespeed";
 
+  #
+  proxy_cache_path  /tmp/  levels=1:2 keys_zone=DEFAULT:1m inactive=24h  max_size=1g;
+
   # set REMOTE_ADDR from any internal proxies
   # see http://nginx.org/en/docs/http/ngx_http_realip_module.html
   set_real_ip_from 127.0.0.1;
