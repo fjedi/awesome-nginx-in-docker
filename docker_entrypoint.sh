@@ -70,7 +70,7 @@ http {
   include nginx.pagespeed.core.conf;
   # Set the value of the `X-Page-Speed` response header
   # https://modpagespeed.com/doc/configuration#XHeaderValue
-  pagespeed XHeaderValue "pagespeed";
+  # pagespeed XHeaderValue "pagespeed";
 
   #
   proxy_cache_path  /tmp/  levels=1:2 keys_zone=DEFAULT:1m inactive=24h  max_size=1g;
