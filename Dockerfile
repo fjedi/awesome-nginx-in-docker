@@ -7,7 +7,7 @@ ENV NGX_BROTLI_COMMIT="bcceaab88e555f686d5ed39dfb238f898df2788c" \
   PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/usr/local/openresty/bin
 
 # Docker Build Arguments
-ARG OPENRESTY_VERSION="1.15.8.3"
+ARG OPENRESTY_VERSION="1.19.9.1"
 ARG OPENRESTY_LUAROCKS_VERSION="2.4.4"
 ARG OPENRESTY_OPENSSL_VERSION="1.1.1l"
 ARG OPENRESTY_PCRE_VERSION="8.42"
