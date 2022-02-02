@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:18.04
 LABEL Alexander Radyushin <alexander@fjedi.com>
 
 ENV NGX_BROTLI_COMMIT="bcceaab88e555f686d5ed39dfb238f898df2788c" \
