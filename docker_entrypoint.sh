@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+chmod 777 -cR /etc/resty-auto-ssl
+
 NGINX_DIR=/usr/local/openresty/nginx
 NGINX_CONF=${NGINX_DIR}/conf/nginx.conf
 
@@ -11,11 +13,14 @@ tee -a >${NGINX_CONF} <<EOF
 # Load nginx/openresty lua modules
 load_module "modules/ngx_http_geoip_module.so";
 
-user nginx;
+user root;
 # This number should be, at maximum, the number of CPU cores on your system.
 worker_processes auto;
 # Number of file descriptors used for Nginx.
 worker_rlimit_nofile 65535;
+
+# Enables the use of JIT for regular expressions to speed-up their processing.
+pcre_jit on;
 
 events {
   # Accept as many connections as possible, after nginx gets notification about a new connection.
@@ -42,7 +47,7 @@ http {
 
   #
   include mime.types;
-	default_type application/octet-stream;
+  default_type application/octet-stream;
 
   # The "auto_ssl" shared dict should be defined with enough storage space to
   # hold your certificate data. 1MB of storage holds certificates for
@@ -64,13 +69,6 @@ http {
 
   #
   client_max_body_size ${NGX_MAX_BODY_SIZE:-50M};
-
-  # PageSpeed module
-  pagespeed ${NGX_PAGESPEED_MODULE_STATUS:-off};
-  include nginx.pagespeed.core.conf;
-  # Set the value of the `X-Page-Speed` response header
-  # https://modpagespeed.com/doc/configuration#XHeaderValue
-  # pagespeed XHeaderValue "pagespeed";
 
   #
   proxy_cache_path  /tmp/  levels=1:2 keys_zone=DEFAULT:1m inactive=24h  max_size=1g;
@@ -100,7 +98,10 @@ http {
   gzip_comp_level ${NGX_GZIP_COMPRESSION_LEVEL:-6};
   gzip_proxied any;
   gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
-  #
+  
+  ##
+  # Brotli
+  ## 
   brotli on;
   brotli_static on;
   brotli_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
@@ -119,7 +120,11 @@ http {
     end)
 
     -- Comment this line if you start this server in production environment
-    auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
+    -- auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
+
+    if "${SSL_PROD:-no}" ~= "yes" then
+      auto_ssl:set("ca", "https://acme-staging-v02.api.letsencrypt.org/directory")
+    end
 
     auto_ssl:init()
   }
@@ -183,7 +188,7 @@ EOF
 fi
 
 if [ $# -eq 0 ]; then
-  exec /usr/bin/supervisord;
+  exec /usr/bin/supervisord -c /etc/supervisor/conf.d/nginx.conf;
 else
   exec "$@"
 fi
