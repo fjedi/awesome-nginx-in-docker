@@ -29,7 +29,7 @@ docker run -d \
   --restart unless-stopped \
   --network bridge \
   -e DOMAINS="$DOMAINS" \
-  fjedi/nginx
+  fjedi-nginx
 ```
 
 Or if you use [docker-compose](https://docs.docker.com/compose/), then your config may look smth like this:
@@ -45,6 +45,8 @@ services:
       context: .
     environment:
       DOMAINS: "example1.com|example2.com"
+      # uncomment it only when you check everything with Let's Encrypt staging server (Let's Encrypt prod has weekly limits)
+      # SSL_PROD: "yes"
       # NGX_MAX_WORKER_CONNECTIONS: 512
       # NGX_DNS_SERVER: 8.8.8.8
       # NGX_GZIP_COMPRESSION_LEVEL: 5
@@ -82,14 +84,21 @@ docker compose up -d
 
 ### Available configuration options
 
-| Variable                     | Example                                | Description                                                                                                                        |
-| ---------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| DOMAINS                      | `example.com`, `([a-z]+.)?example.com` | Regex pattern of allowed domains. Internally, we're using [ngx.re.match](https://github.com/openresty/lua-nginx-module#ngxrematch) |
-| NGX_DNS_SERVER               | `8.8.8.8`                              | DNS resolver used for OCSP stapling. `8.8.8.8` by default.                                                                         |
-| NGX_MAX_BODY_SIZE            | `50M`                                  | Max allowed body size. `50M` by default.                                                                                           |
-| NGX_GZIP_COMPRESSION_LEVEL   | `6`                                    | gzip compression level. `6` by default.                                                                                            |
-| NGX_BROTLI_COMPRESSION_LEVEL | `6`                                    | gzip compression level. `6` by default.                                                                                            |
-| NGX_MAX_WORKER_CONNECTIONS   | `1024`                                 | Determines how many clients will be served by each worker process. `1024` by default.                                              |
+| Variable                     | Example                                | Description                                                                                                                                                                 |
+| ---------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DOMAINS                      | `example.com`, `([a-z]+.)?example.com` | Regex pattern of allowed domains. Internally, we're using [ngx.re.match](https://github.com/openresty/lua-nginx-module#ngxrematch)                                          |
+| SSL_PROD                     | `yes`                                  | Production of Let's Encrypt has very small weekly limit to request certificate, so setup your environment with staging of Let's Encrypt and enable SSL_PROD only when ready |
+| NGX_DNS_SERVER               | `8.8.8.8`                              | DNS resolver used for OCSP stapling. `8.8.8.8` by default.                                                                                                                  |
+| NGX_MAX_BODY_SIZE            | `50M`                                  | Max allowed body size. `50M` by default.                                                                                                                                    |
+| NGX_GZIP_COMPRESSION_LEVEL   | `6`                                    | gzip compression level. `6` by default.                                                                                                                                     |
+| NGX_BROTLI_COMPRESSION_LEVEL | `6`                                    | gzip compression level. `6` by default.                                                                                                                                     |
+| NGX_MAX_WORKER_CONNECTIONS   | `1024`                                 | Determines how many clients will be served by each worker process. `1024` by default.                                                                                       |
+
+### Build
+
+```Bash
+docker build https://github.com/fjedi/awesome-nginx-in-docker.git#alpine-resty-1.21.4 --tag fjedi-nginx
+```
 
 ## LICENCE
 
